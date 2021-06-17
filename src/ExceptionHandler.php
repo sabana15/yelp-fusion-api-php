@@ -1,6 +1,6 @@
 <?php 
 
-namespace TrialAPI\Exception;
+namespace TrialAPI;
 
 class ExceptionHandler extends \Exception
 {
@@ -22,16 +22,7 @@ class ExceptionHandler extends \Exception
      */
     public function getResponseBody()
     {
-        return $this->responseBody;
+        $responseBody = json_decode($this->responseBody, true);
+        return 'Validation Error : '.$responseBody['error']['description'];
     }
-
-  /**
-     * custom function to display the error as per requirement
-     * @return string
-     */
-    public function errorMessage() {
-        //error message
-        $msg = json_decode($this->getResponseBody());
-        echo 'Error: '.$msg->error->description;
-      }
 }

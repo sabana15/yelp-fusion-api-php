@@ -1,9 +1,10 @@
 <?php
 namespace TrialAPI;
 
+use \Exception;
 use GuzzleHttp\Client as HttpClient;
 use Psr\Http\Message\ResponseInterface;
-use TrialAPI\Traits\HttpTrait;
+use TrialAPI\HttpTrait;
 
 class YelpClient
 {
@@ -12,9 +13,15 @@ class YelpClient
 
     public function __construct($apiKey= '')
     {
+        try{
         // Set the API Key
         $this->apiKey = $apiKey;
-
+        }
+        catch(Exception $e)
+        {
+            $exception = new Exception($e->getMessage());
+            throw $exception->setResponseBody((string) $e->getResponse()->getBody());
+        }
         /**
          * Get the HTTP Client if exist
          *  Create/Set the HTTP CLient if not exist
@@ -56,20 +63,6 @@ class YelpClient
     private function getApiKey()
     {
         return $this->apiKey;
-    }
-
-    /**
-     * Fetch the business by Id
-     * @param    string    $businessId
-     * @param    array     $parameters
-     * @return   stdClass
-     */
-    public function getBusinessbyId($businessId, $parameters = [])
-    {
-        $callpath = $this->appendUrlwithParams('/v3/businesses/'.$businessId, $parameters);
-        $clientrequest = $this->getClientRequest('GET', $callpath, $this->setDefaultHeaders());
-
-        return $this->processClientRequest($clientrequest);
     }
 
   /**

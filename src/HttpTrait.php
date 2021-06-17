@@ -1,6 +1,6 @@
 <?php
 
-namespace TrialAPI\Traits;
+namespace TrialAPI;
 
 use \Exception;
 use GuzzleHttp\Client as HttpClient;
@@ -9,7 +9,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TrialAPI\Exception\ExceptionHandler;
+use TrialAPI\ExceptionHandler;
     
 trait HttpTrait
 {
@@ -89,10 +89,9 @@ trait HttpTrait
         try {
             return $this->getHttpClient()->send($request);
         } catch (BadResponseException $e) {
-            $exception = new ExceptionHandler($e->getMessage());
-            $exception->setResponseBody((string) $e->getResponse()->getBody());
-            $exception->errorMessage();
             
+            $exception = new ExceptionHandler($e->getMessage());
+            throw $exception->setResponseBody((string) $e->getResponse()->getBody());
         }
     }
 
