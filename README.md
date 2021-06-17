@@ -40,30 +40,44 @@ $businessSearchList = $yelpFusion->getBusinessesSearchResults($param);
 
 Create the file index.php and put the following content.
 
+
 <?php
+
 
 require 'vendor/autoload.php';
 
+
 try{
+
 
     $apikey = 'API key goes here';
 
+
     $yelpFusion = new TrialAPI\YelpClient($apikey);
+
 
     $param = array('location' => 'melbourne');
 
+
     $businessSearchList = $yelpFusion->getBusinessesSearchResults($param);
+
 
     var_dump($businessSearchList);
 
+
 }
+
 
 catch(Exception $e) {
 
+
     echo $e->getResponseBody();
+
 
 }
 
+
 ?>
+
 
 Run 'php index.php' to check in terminal or accesss and check in browser
